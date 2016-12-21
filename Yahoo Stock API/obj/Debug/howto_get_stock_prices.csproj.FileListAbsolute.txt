@@ -1,0 +1,8 @@
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\bin\Debug\howto_get_stock_prices.exe
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\bin\Debug\howto_get_stock_prices.pdb
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.csprojResolveAssemblyReference.cache
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.Form1.resources
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.Properties.Resources.resources
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.csproj.GenerateResource.Cache
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.exe
+C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.pdb
