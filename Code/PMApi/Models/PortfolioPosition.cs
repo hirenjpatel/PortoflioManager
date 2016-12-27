@@ -7,21 +7,21 @@ using System.Web;
 
 namespace PMApi.Models
 {
-    public class PriceValue : CreationInfo
+    public class PortfolioPosition : CreationInfo
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [ForeignKey("Portfolio")]
+        public int PortfolioId { get; set; }
+
         public string Symbol { get; set; }
 
-        public DateTime PriceDate { get; set; }
-        public decimal Price { get; set; }
-        public decimal HighPrice { get; set; }
-        public decimal LowPrice { get; set; }
-        public decimal OpenPrice { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal CostBasis { get; set; }
 
 
-
+        public virtual Portfolio Portfolio {get; set;}
     }
 }

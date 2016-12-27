@@ -6,3 +6,12 @@ C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_price
 C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.csproj.GenerateResource.Cache
 C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.exe
 C:\Users\hi.patel\Desktop\howto_get_stock_prices\obj\Debug\howto_get_stock_prices.pdb
+C:\Source\PortfolioManager\Yahoo Stock API\bin\Debug\howto_get_stock_prices.exe.config
+C:\Source\PortfolioManager\Yahoo Stock API\bin\Debug\howto_get_stock_prices.exe
+C:\Source\PortfolioManager\Yahoo Stock API\bin\Debug\howto_get_stock_prices.pdb
+C:\Source\PortfolioManager\Yahoo Stock API\obj\Debug\howto_get_stock_prices.csprojResolveAssemblyReference.cache
+C:\Source\PortfolioManager\Yahoo Stock API\obj\Debug\howto_get_stock_prices.Form1.resources
+C:\Source\PortfolioManager\Yahoo Stock API\obj\Debug\howto_get_stock_prices.Properties.Resources.resources
+C:\Source\PortfolioManager\Yahoo Stock API\obj\Debug\howto_get_stock_prices.csproj.GenerateResource.Cache
+C:\Source\PortfolioManager\Yahoo Stock API\obj\Debug\howto_get_stock_prices.exe
+C:\Source\PortfolioManager\Yahoo Stock API\obj\Debug\howto_get_stock_prices.pdb
