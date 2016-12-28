@@ -12,9 +12,37 @@ namespace PMApi.Repo
     {
         PortfolioManagerContext _db;
 
+
+        public PortfolioRepo()
+        {
+            _db = new PortfolioManagerContext();
+        }
         public PortfolioRepo(PortfolioManagerContext connection)
         {
             _db = connection;
+        }
+
+        public List<Portfolio> GetPortoflios()
+        {
+
+            return _db.Portfolios.ToList();
+
+        }
+
+        public async Task<List<Portfolio>> GetPortofliosAsync()
+        {
+            using (_db)
+            {
+
+                return await _db.Portfolios.Include(s => s.PortfolioPositions).ToListAsync();
+            }
+        }
+
+        public Portfolio GetPortoflio(int id)
+        {
+
+            return _db.Portfolios.Where(x => x.Id == id).FirstOrDefault();
+            
         }
 
         public async Task<Portfolio> GetPortoflioAsync(int id)
@@ -26,7 +54,7 @@ namespace PMApi.Repo
             }
         }
 
-        public async Task Update(Portfolio portoflio)
+        public async Task UpdateAsync(Portfolio portoflio)
         {
             using (_db)
             {
@@ -38,6 +66,11 @@ namespace PMApi.Repo
             }
         }
 
+        public void Update(Portfolio portoflio)
+        {
+            _db.Entry(portoflio).State = EntityState.Modified;
+        }
+
         public async Task InsertAsync(Portfolio portfolio)
         {
             using (_db)
@@ -45,6 +78,12 @@ namespace PMApi.Repo
                 _db.Portfolios.Add(portfolio);
                 await _db.SaveChangesAsync();
             }
+        }
+
+        public void Insert(Portfolio portfolio)
+        {
+
+            _db.Portfolios.Add(portfolio);
         }
 
         public async Task DeleteAsync(int id)
@@ -57,6 +96,11 @@ namespace PMApi.Repo
                 _db.Entry(portfolio).State = EntityState.Deleted;
                 await _db.SaveChangesAsync();
             }
+        }
+
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
         }
     }
 }

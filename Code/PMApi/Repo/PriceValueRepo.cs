@@ -12,6 +12,10 @@ namespace PMApi.Repo
     {
 
         PortfolioManagerContext _db;
+        public PriceValueRepo()
+        {
+            _db = new PortfolioManagerContext();
+        }
         public PriceValueRepo(PortfolioManagerContext connection)
         {
             _db = connection;
@@ -60,6 +64,11 @@ namespace PMApi.Repo
             }
         }
 
+        public void Update(PriceValue pricevalue)
+        {
+            _db.Entry(pricevalue).State = EntityState.Modified;
+        }
+
         public async Task InsertAsync(PriceValue pricevalue)
         {
             using (_db)
@@ -69,12 +78,14 @@ namespace PMApi.Repo
             }
         }
 
+        public void Insert(PriceValue pricevalue)
+        {
+            _db.PriceValues.Add(pricevalue);
+        }
+
         public void Delete(PriceValue pricevalue)
         {
-            using (_db)
-            {
-                _db.PriceValues.Remove(pricevalue);
-            }
+            _db.PriceValues.Remove(pricevalue);
         }
 
         public async Task DeleteAsync(int id)
@@ -97,6 +108,11 @@ namespace PMApi.Repo
         public async void SaveChangesAsync(PriceValue pricevalue)
         {
             await _db.SaveChangesAsync();
+        }
+
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
         }
 
 

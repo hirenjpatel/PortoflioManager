@@ -57,7 +57,7 @@ namespace PMApi.Controllers
 
             try
             {
-                await repo.Update(portfolio);
+                await repo.UpdateAsync(portfolio);
             }
             catch (DbUpdateConcurrencyException)
             {

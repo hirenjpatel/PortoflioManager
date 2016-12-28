@@ -1,6 +1,7 @@
 ﻿using PMApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,9 +13,14 @@ namespace PMApi.PriceEngine
     {
         const string base_url =
                "http://download.finance.yahoo.com/d/quotes.csv?s=@&f=sl1d1t1c1";
+        //	s: Symbol 
+        //  l1: Last Trade (Price Only)
+        //  d1: Last Trade Date
+        //  t1: Last Trade Time
+        //  c1: Change
 
         public List<PriceValue> GetRealTimePrices(string[] symbols)
-        {
+         {
 
             List<PriceValue> prices = new List<PriceValue>();
             string joinedSymbols = string.Join("+", symbols);
@@ -22,8 +28,8 @@ namespace PMApi.PriceEngine
 
 
             // Remove the trailing plus sign.
-            
-            url = joinedSymbols.Substring(0, joinedSymbols.Length - 1);
+
+            url = joinedSymbols;
 
             // Prepend the base URL.
 
@@ -34,7 +40,7 @@ namespace PMApi.PriceEngine
             {
                 // Get the web response.
                 string result = GetWebResponse(url);
-                Console.WriteLine(result.Replace("\\r\\n", "\r\n"));
+             
 
                 // Pull out the current prices.
                 string[] lines = result.Split(
@@ -44,8 +50,24 @@ namespace PMApi.PriceEngine
                 foreach(string line in lines)
                 {
                     PriceValue pricevalue = new PriceValue();
-                    pricevalue.Symbol = line.Split(',')[0];
+                    char[] charsToTrim = { '*','\"', '"' };
+                    //set the stock symbol
+                    pricevalue.Symbol = line.Split(',')[0].Trim(charsToTrim) ;
                     pricevalue.Price = Convert.ToDecimal(line.Split(',')[1]);
+                    //compile the date time by combining the Date and the time
+                    string date = line.Split(',')[2].Trim(charsToTrim);
+                    string time = line.Split(',')[3].Trim(charsToTrim);
+                    DateTime dt = Convert.ToDateTime(date + " " + time);
+                    //convert the date time to CST from EST
+                    DateTime priceDateTime = dt.Subtract(TimeSpan.FromHours(1));
+                    //set the pricedate
+                    pricevalue.PriceDate = priceDateTime;
+                    //set the creation date
+                    pricevalue.CreationDate = DateTime.Now;
+                    pricevalue.CreationName = "SYSTEM";
+
+
+
 
                     prices.Add(pricevalue);
                 }
@@ -59,6 +81,11 @@ namespace PMApi.PriceEngine
             return prices;
 
         }
+        /// <summary>
+        /// Call the url and get the web response
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         private string GetWebResponse(string url)
         {
             // Make a WebClient.

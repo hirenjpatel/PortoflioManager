@@ -198,6 +198,7 @@
     <Compile Include="Models\Valuation.cs" />
     <Compile Include="Models\ValuationDetail.cs" />
     <Compile Include="PriceEngine\PriceEngine.cs" />
+    <Compile Include="PriceEngine\Valuator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repo\PortfolioRepo.cs" />
     <Compile Include="Repo\PriceValueRepo.cs" />
