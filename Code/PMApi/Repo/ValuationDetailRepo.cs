@@ -75,6 +75,7 @@ namespace PMApi.Repo
 
         public void Insert(ValuationDetail valuationDetail)
         {
+            valuationDetail.CreationDate = DateTime.Now;
             _db.ValuationDetails.Add(valuationDetail);
         }
 

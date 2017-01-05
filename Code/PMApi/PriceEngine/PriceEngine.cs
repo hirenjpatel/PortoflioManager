@@ -62,6 +62,8 @@ namespace PMApi.PriceEngine
                     DateTime priceDateTime = dt.Subtract(TimeSpan.FromHours(1));
                     //set the pricedate
                     pricevalue.PriceDate = priceDateTime;
+
+                    pricevalue.IntradayChange = Convert.ToDecimal(line.Split(',')[4]);
                     //set the creation date
                     pricevalue.CreationDate = DateTime.Now;
                     pricevalue.CreationName = "SYSTEM";

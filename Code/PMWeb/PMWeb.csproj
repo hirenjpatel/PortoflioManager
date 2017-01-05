@@ -264,6 +264,7 @@
     <Content Include="Views\HomePage\Index.cshtml" />
     <Content Include="Views\Portfolio\Index.cshtml" />
     <Content Include="Views\Portfolio\Valuation.cshtml" />
+    <Content Include="Views\Portfolio\Intraday.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -111,6 +111,7 @@ namespace PMApi.PriceEngine
                     vDetail.PortfolioPositionId = pp.Id;
                     vDetail.Quantity = pp.Quantity;
                     vDetail.Price = prices.Where(x => x.Symbol == pp.Symbol.Trim()).FirstOrDefault().Price;
+                    vDetail.IntradayChange = prices.Where(x => x.Symbol == pp.Symbol.Trim()).FirstOrDefault().IntradayChange;
                     vDetail.PositionValue = vDetail.Quantity * vDetail.Price;
                     _valuationDetailRepo.Insert(vDetail);
                     _valuationDetailRepo.SaveChanges();
