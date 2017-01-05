@@ -24,6 +24,11 @@ namespace PMApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+               name: "ValuationApi",
+               routeTemplate: "api/{controller}/{valuationId}/{portfolioId}/{begtime}/{endtime}"
+               );
         }
     }
 }

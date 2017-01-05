@@ -58,6 +58,8 @@
     <Compile Include="PriceEngineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PortfolioTests.cs" />
+    <Compile Include="ValuationTests.cs" />
+    <Compile Include="ValuatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

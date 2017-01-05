@@ -14,6 +14,7 @@ namespace PMApi.Models
         public int Id { get; set; }
 
         public int ValuationId { get; set; }
+        public int PortfolioId { get; set; }
 
         public DateTime ValuationTime { get; set; }
 

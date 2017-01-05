@@ -19,7 +19,7 @@ namespace PMApi.PriceEngine
         //  t1: Last Trade Time
         //  c1: Change
 
-        public List<PriceValue> GetRealTimePrices(string[] symbols)
+        public static List<PriceValue> GetRealTimePrices(string[] symbols)
          {
 
             List<PriceValue> prices = new List<PriceValue>();
@@ -86,7 +86,7 @@ namespace PMApi.PriceEngine
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private string GetWebResponse(string url)
+        private static string GetWebResponse(string url)
         {
             // Make a WebClient.
             WebClient web_client = new WebClient();

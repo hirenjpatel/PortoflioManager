@@ -13,7 +13,6 @@ namespace PMApi.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public DateTime ValuationTime { get; set; }
         public string ValuationStatus { get; set; }
 
         public virtual ICollection<ValuationDetail> ValuationDetails { get; set; }

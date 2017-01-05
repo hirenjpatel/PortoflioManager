@@ -18,6 +18,11 @@ namespace PMApi.Repo
             _db = connection;
         }
 
+        public ValuationRepo()
+        {
+            _db = new PortfolioManagerContext();
+        }
+
         public async Task<Valuation> GetValuationAsync(int id)
         {
             using (_db)
@@ -27,5 +32,32 @@ namespace PMApi.Repo
                 
             }
         }
+
+        public Valuation GetValuation(int id)
+        {
+            return _db.Valuations.Where(x => x.Id == id).FirstOrDefault();
+
+        }
+
+        public void SaveChanges()
+        {
+            _db.SaveChanges();
+        }
+
+        public void Update(Valuation valuation)
+        {
+            valuation.RevisionDate = DateTime.Now;
+            _db.Entry(valuation).State = EntityState.Modified;
+        }
+
+        public void Insert(Valuation valuation)
+        {
+            _db.Valuations.Add(valuation);
+        }
+
+
+     
+
+
     }
 }

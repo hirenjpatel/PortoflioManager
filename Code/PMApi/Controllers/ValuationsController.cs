@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using PMApi.Models;
 using PMApi.Repo;
+using PMApi.PriceEngine;
 
 namespace PMApi.Controllers
 {
@@ -21,6 +22,10 @@ namespace PMApi.Controllers
 
         private ValuationRepo repo
             = new ValuationRepo(new PortfolioManagerContext());
+        private ValuationDetailRepo valuationDetailRepo
+           = new ValuationDetailRepo(new PortfolioManagerContext());
+        private PortfolioRepo portfoliolRepo
+          = new PortfolioRepo(new PortfolioManagerContext());
 
         // GET: api/Valuations
         public IQueryable<Valuation> GetValuations()
@@ -39,6 +44,37 @@ namespace PMApi.Controllers
             }
 
             return Ok(valuation);
+        }
+
+        [HttpGet]
+        [Route("api/valuations/RunValuation/{id}")]
+        [ResponseType(typeof(string))]
+        public async Task<IHttpActionResult> RunValuation(int id)
+        {
+            Valuator valuator = new Valuator();
+            valuator.RunValuation(1000);
+            return Ok(valuator);
+        }
+
+        [HttpGet]
+        [Route("api/valuations/ValuationSummary/{valuationId}/{portfolioId}/{begtime}/{endtime}")]
+        [ResponseType(typeof(ValuationSummary))]
+        public async Task<IHttpActionResult> ValuationSummary(int valuationId, int portfolioId, DateTime begtime, DateTime endtime)
+        {
+            ValuationSummary summary = new ValuationSummary();
+            summary.BegTime = begtime;
+            summary.EndTime = endtime;
+           
+            summary.Portfolio = await portfoliolRepo.GetPortoflioAsync(portfolioId);
+            summary.ValuationDetail = await valuationDetailRepo.GetValuationDetailsAsync(valuationId, begtime, endtime);
+            summary.ValuationDetailSummary = summary.ValuationDetail.GroupBy(x => x.ValuationTime).ToDictionary(x => x.Key, x =>x.Sum(global =>global.PositionValue));
+            summary.IntraDayChangeValuationDetailSummary = GenerateIntraDayChangeValuationDetailSummary(summary.ValuationDetailSummary);
+            if (summary == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(summary);
         }
 
         // PUT: api/Valuations/5
@@ -119,6 +155,37 @@ namespace PMApi.Controllers
         private bool ValuationExists(int id)
         {
             return db.Valuations.Count(e => e.Id == id) > 0;
+        }
+
+
+        /// <summary>
+        /// Generates the intra day change for the valaution by comparing the previous value
+        /// </summary>
+        public Dictionary<DateTime, decimal> GenerateIntraDayChangeValuationDetailSummary(Dictionary<DateTime, decimal> ValuationDetailSummary)
+        {
+            Dictionary<DateTime, decimal> IntraDayChangeValuationDetailSummary = new Dictionary<DateTime, decimal>();
+
+            bool firstItem = true;
+            decimal intraDayChange = 0;
+            decimal portfolioValue = 0;
+            foreach (KeyValuePair<DateTime, decimal> entry in ValuationDetailSummary)
+            {
+                if (firstItem)
+                {
+                    //this is the first item int he list so we do not have a previous records to compare with
+                    //so set IntraDay Change will be 0
+                    IntraDayChangeValuationDetailSummary.Add(entry.Key, intraDayChange);
+                    portfolioValue = entry.Value;
+                    firstItem = false;
+                }
+                else
+                {
+                    //subtract value from previous value to get intraday change
+                    IntraDayChangeValuationDetailSummary.Add(entry.Key, (entry.Value - portfolioValue));
+                }
+            }
+
+            return IntraDayChangeValuationDetailSummary;
         }
     }
 }

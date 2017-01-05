@@ -15,7 +15,7 @@ namespace PMTests
         {
             PriceValueRepo _repo = new PriceValueRepo();
             PriceEngine engine = new PriceEngine();
-            List<PriceValue> prices = engine.GetRealTimePrices(new string[] { "AXP", "MSFT" });
+            List<PriceValue> prices = PriceEngine.GetRealTimePrices(new string[] { "AXP", "MSFT" });
 
             foreach (PriceValue pv in prices)
             {

@@ -66,6 +66,7 @@ namespace PMApi.Repo
 
         public void Update(PriceValue pricevalue)
         {
+            pricevalue.RevisionDate = DateTime.Now;
             _db.Entry(pricevalue).State = EntityState.Modified;
         }
 
@@ -80,6 +81,7 @@ namespace PMApi.Repo
 
         public void Insert(PriceValue pricevalue)
         {
+            pricevalue.CreationDate = DateTime.Now;
             _db.PriceValues.Add(pricevalue);
         }
 
