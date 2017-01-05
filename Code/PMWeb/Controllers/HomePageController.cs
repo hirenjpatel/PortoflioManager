@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace PMWeb.Controllers
 {
-    public class HomeController : Controller
+    public class HomePageController : Controller
     {
         public ActionResult Index()
         {
