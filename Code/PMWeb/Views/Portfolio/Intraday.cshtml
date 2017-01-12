@@ -1,4 +1,4 @@
-﻿@model  DotNet.Highcharts.Highcharts
+﻿@model   Tuple<PMApi.Models.ValuationSummary, DotNet.Highcharts.Highcharts>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Valuation Intraday Chart";
@@ -11,6 +11,13 @@
 
 
 <body>
-    <p>Intraday Chart</p>
-    <div>@(Model)</div>
+    <p>@(Model.Item1.Portfolio.Name) - Intraday Chart</p>
+    <div>@(Model.Item2)</div>
+
+
+    <div>
+        Last Change: $@(Model.Item1.IntraDayChangeValuationDetailSummary.Values.Last().ToString());
+        Portfolio Value: $@(Model.Item1.ValuationDetailSummary.Values.Last().ToString());
+    </div>
 </body>
+

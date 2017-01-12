@@ -17,7 +17,7 @@ namespace PMWeb.Controllers
     public class PortfolioController : Controller
     {
         HttpClient client = new HttpClient();
-        string url = "http://portfoliomanagerservice.azurewebsites.net/api/";
+        string url = Environment.GetEnvironmentVariable("PMApiUrl");
         public PortfolioController()
         {
             client = new HttpClient();
@@ -77,7 +77,7 @@ namespace PMWeb.Controllers
                  {
                new Series { Name = "Intraday Change", Data = new Data(intraDayValues) }
                   });
-
+          
             return View(chart);
 
                // return View(valuationSummary);
@@ -132,7 +132,9 @@ namespace PMWeb.Controllers
                new Series { Name = "Intraday Change", Data = new Data(intraDayValues) }
                   });
 
-                return View(chart);
+
+                Tuple<PMApi.Models.ValuationSummary, Highcharts> IntraDayModel = new Tuple<PMApi.Models.ValuationSummary, Highcharts>(valuationSummary, chart);
+                return View(IntraDayModel);
 
                 // return View(valuationSummary);
             }
