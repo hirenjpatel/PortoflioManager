@@ -33,6 +33,7 @@ namespace PMApi.Controllers
             return db.Valuations;
         }
 
+
         // GET: api/Valuations/5
         [ResponseType(typeof(Valuation))]
         public async Task<IHttpActionResult> GetValuation(int id)
@@ -57,6 +58,28 @@ namespace PMApi.Controllers
         }
 
         [HttpGet]
+        [Route("api/valuations/Intraday/{valuationId}/{portfolioId}/{begtime}/{endtime}")]
+        [ResponseType(typeof(ValuationSummary))]
+        public async Task<IHttpActionResult> Intraday(int valuationId, int portfolioId, DateTime begtime, DateTime endtime)
+        {
+            ValuationSummary summary = new ValuationSummary();
+            summary.BegTime = begtime;
+            summary.EndTime = endtime;
+
+            summary.Portfolio = await portfoliolRepo.GetPortoflioAsync(portfolioId);
+            summary.ValuationDetail = await valuationDetailRepo.GetValuationDetailsAsync(portfolioId, valuationId, begtime, endtime);
+            summary.ValuationDetailSummary = summary.ValuationDetail.GroupBy(x => x.ValuationTime).ToDictionary(x => x.Key, x => x.Sum(global => global.PositionValue));
+            // summary.IntraDayChangeValuationDetailSummary = GenerateIntraDayChangeValuationDetailSummary(summary.ValuationDetailSummary);
+            summary.IntraDayChangeValuationDetailSummary = summary.ValuationDetail.GroupBy(x => x.ValuationTime).ToDictionary(x => x.Key, x => x.Sum(y => y.Quantity * y.IntradayChange));
+            if (summary == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(summary);
+        }
+
+        [HttpGet]
         [Route("api/valuations/ValuationSummary/{valuationId}/{portfolioId}/{begtime}/{endtime}")]
         [ResponseType(typeof(ValuationSummary))]
         public async Task<IHttpActionResult> ValuationSummary(int valuationId, int portfolioId, DateTime begtime, DateTime endtime)
@@ -66,9 +89,10 @@ namespace PMApi.Controllers
             summary.EndTime = endtime;
            
             summary.Portfolio = await portfoliolRepo.GetPortoflioAsync(portfolioId);
-            summary.ValuationDetail = await valuationDetailRepo.GetValuationDetailsAsync(valuationId, begtime, endtime);
+            summary.ValuationDetail = await valuationDetailRepo.GetValuationDetailsAsync(portfolioId, valuationId, begtime, endtime);
             summary.ValuationDetailSummary = summary.ValuationDetail.GroupBy(x => x.ValuationTime).ToDictionary(x => x.Key, x =>x.Sum(global =>global.PositionValue));
             summary.IntraDayChangeValuationDetailSummary = GenerateIntraDayChangeValuationDetailSummary(summary.ValuationDetailSummary);
+            //summary.IntraDayChangeValuationDetailSummary = summary.ValuationDetail.GroupBy(x => x.ValuationTime).ToDictionary(x => x.Key, x => x.Sum(y => y.Quantity * y.IntradayChange));
             if (summary == null)
             {
                 return NotFound();

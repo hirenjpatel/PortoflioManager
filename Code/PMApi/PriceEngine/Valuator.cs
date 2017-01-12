@@ -72,8 +72,9 @@ namespace PMApi.PriceEngine
             {
                 foreach (PortfolioPosition pp in p.PortfolioPositions)
                 {
-                    symbols.Add(pp.Symbol.Trim());
-                    
+                    if (!symbols.Contains(pp.Symbol.Trim()))
+                        symbols.Add(pp.Symbol.Trim());
+
                 }
 
             }
@@ -111,6 +112,7 @@ namespace PMApi.PriceEngine
                     vDetail.PortfolioPositionId = pp.Id;
                     vDetail.Quantity = pp.Quantity;
                     vDetail.Price = prices.Where(x => x.Symbol == pp.Symbol.Trim()).FirstOrDefault().Price;
+                    vDetail.IntradayChange = prices.Where(x => x.Symbol == pp.Symbol.Trim()).FirstOrDefault().IntradayChange;
                     vDetail.PositionValue = vDetail.Quantity * vDetail.Price;
                     _valuationDetailRepo.Insert(vDetail);
                     _valuationDetailRepo.SaveChanges();

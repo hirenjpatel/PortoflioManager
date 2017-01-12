@@ -23,6 +23,7 @@ namespace PMApi.Models
 
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
+        public decimal IntradayChange { get; set; }
         public decimal PositionValue { get; set; }
 
         public virtual PortfolioPosition PortfolioPosition { get; set; }

@@ -46,19 +46,19 @@ namespace PMApi.Repo
             return _db.ValuationDetails.Where(x => x.ValuationId == valuationId && x.ValuationTime == valuationTime).ToList();
 
         }
-               
 
-        public List<ValuationDetail> GetValuationDetails(int valuationId, DateTime begTime, DateTime endTime)
+
+        public List<ValuationDetail> GetValuationDetails(int portfolioId, int valuationId,  DateTime begTime, DateTime endTime)
         {
             //return _db.Valuations.Where(x => x.Id == id).Include(s => s.ValuationDetails.Select(c => c.PortfolioPosition).Select(c => c.Portfolio).Select(x => x.PortfolioPositions)).FirstOrDefault();
-            return _db.ValuationDetails.Where(x => x.ValuationId == valuationId && x.ValuationTime >= begTime && x.ValuationTime <= endTime).OrderBy(x => x.ValuationTime).ToList();
+            return _db.ValuationDetails.Where(x => x.ValuationId == valuationId && x.PortfolioId == portfolioId && x.ValuationTime >= begTime && x.ValuationTime <= endTime).OrderBy(x => x.ValuationTime).ToList();
 
         }
 
-        public async Task<List<ValuationDetail>> GetValuationDetailsAsync(int valuationId, DateTime begTime, DateTime endTime)
+        public async Task<List<ValuationDetail>> GetValuationDetailsAsync(int portfolioId, int valuationId, DateTime begTime, DateTime endTime)
         {
             //return _db.Valuations.Where(x => x.Id == id).Include(s => s.ValuationDetails.Select(c => c.PortfolioPosition).Select(c => c.Portfolio).Select(x => x.PortfolioPositions)).FirstOrDefault();
-            return await _db.ValuationDetails.Where(x => x.ValuationId == valuationId && x.ValuationTime >= begTime && x.ValuationTime <= endTime).OrderBy(x => x.ValuationTime).ToListAsync();
+            return await _db.ValuationDetails.Where(x => x.ValuationId == valuationId && x.PortfolioId == portfolioId && x.ValuationTime >= begTime && x.ValuationTime <= endTime).OrderBy(x => x.ValuationTime).ToListAsync();
 
         }
 
@@ -75,6 +75,7 @@ namespace PMApi.Repo
 
         public void Insert(ValuationDetail valuationDetail)
         {
+            valuationDetail.CreationDate = DateTime.Now;
             _db.ValuationDetails.Add(valuationDetail);
         }
 
