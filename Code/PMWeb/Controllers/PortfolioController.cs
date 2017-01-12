@@ -87,10 +87,13 @@ namespace PMWeb.Controllers
         }
 
         [Route("portfolio/intraday/{portfolioId}/{date}")]
-        public async Task<ActionResult> Intraday(int portfolioId, DateTime date)
+        public async Task<ActionResult> Intraday(int portfolioId, DateTime? date = null)
         {
-            DateTime begTime = date;
-            DateTime endTime = date.AddDays(1);
+            DateTime validDate = new DateTime();
+            //if date is not specifiied set it to today's date
+            validDate = date ?? DateTime.Now;
+            DateTime begTime = validDate;
+            DateTime endTime = validDate.AddDays(1);
             string tempurl = url + $"valuations/intraday/1000/{portfolioId}/{begTime.ToString("yyyy-MM-dd")}/{endTime.ToString("yyyy-MM-dd")}";
             HttpResponseMessage responseMessage = await client.GetAsync(tempurl);
 

@@ -72,8 +72,9 @@ namespace PMApi.PriceEngine
             {
                 foreach (PortfolioPosition pp in p.PortfolioPositions)
                 {
-                    symbols.Add(pp.Symbol.Trim());
-                    
+                    if (!symbols.Contains(pp.Symbol.Trim()))
+                        symbols.Add(pp.Symbol.Trim());
+
                 }
 
             }
