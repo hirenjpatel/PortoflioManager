@@ -3,6 +3,8 @@ using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Helpers;
 using DotNet.Highcharts.Options;
 using Newtonsoft.Json;
+using PMApi.Models;
+using PMWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace PMWeb.Controllers
@@ -17,11 +20,11 @@ namespace PMWeb.Controllers
     public class PortfolioController : Controller
     {
         HttpClient client = new HttpClient();
-        string url = "http://portfoliomanagerservice.azurewebsites.net/api/";
+        string url = null;
         public PortfolioController()
         {
             client = new HttpClient();
-
+            url = "http://portfoliomanagerservice.azurewebsites.net/api/";//WebConfigurationManager.AppSettings["PMApiUrl"];
             client.BaseAddress = new Uri(url);
 
             client.DefaultRequestHeaders.Accept.Clear();
@@ -77,7 +80,7 @@ namespace PMWeb.Controllers
                  {
                new Series { Name = "Intraday Change", Data = new Data(intraDayValues) }
                   });
-
+          
             return View(chart);
 
                // return View(valuationSummary);
@@ -132,12 +135,35 @@ namespace PMWeb.Controllers
                new Series { Name = "Intraday Change", Data = new Data(intraDayValues) }
                   });
 
-                return View(chart);
+
+                var model = GenerateValuationViewModel(valuationSummary, chart);
+                return View(model);
 
                 // return View(valuationSummary);
             }
             else
                 return View();
         }
+
+        public ValuationViewModel GenerateValuationViewModel(ValuationSummary summary, Highcharts chart)
+        {
+            ValuationViewModel model = new ValuationViewModel();
+
+            //set the valuation summary
+            model.ValuationSummary = summary;
+            model.Chart = chart;
+            //set the intraday change by getting the last value from the dictionary
+            model.IntradayChange = Math.Round(summary.IntraDayChangeValuationDetailSummary.Values.Last(),2).ToString();
+            model.PercentageChange = Math.Round(((summary.IntraDayChangeValuationDetailSummary.Values.Last() / summary.ValuationDetailSummary.Values.Last()) * 100),2).ToString();
+            model.PortfolioValue = summary.ValuationDetailSummary.Values.Last().ToString();
+            model.IntradayHigh = Math.Round(summary.IntraDayChangeValuationDetailSummary.Values.Max(),2).ToString();
+            model.IntradayLow = Math.Round(summary.IntraDayChangeValuationDetailSummary.Values.Min(),2).ToString();
+
+            return model;
+
+        }
+
+        
     }
+
 }

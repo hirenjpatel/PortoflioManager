@@ -12,6 +12,7 @@ using System.Web.Http.Description;
 using PMApi.Models;
 using PMApi.Repo;
 using PMApi.PriceEngine;
+using System.Web.Configuration;
 
 namespace PMApi.Controllers
 {
@@ -52,7 +53,21 @@ namespace PMApi.Controllers
         [ResponseType(typeof(string))]
         public async Task<IHttpActionResult> RunValuation(int id)
         {
-            Valuator valuator = new Valuator();
+            var config_priceengine = WebConfigurationManager.AppSettings["PriceEngine"];
+            var priceengineName = string.IsNullOrEmpty(config_priceengine) ? "GOOGLE" : config_priceengine;
+
+            IPriceEngine priceEngine;
+            if(priceengineName.ToUpper() == "GOOGLE")
+            {
+                priceEngine = new GooglePriceEngine();
+            }
+            else
+            {
+                priceEngine = new YahooPriceEngine();
+            }
+
+
+            Valuator valuator = new Valuator(priceEngine);
             valuator.RunValuation(1000);
             return Ok(valuator);
         }

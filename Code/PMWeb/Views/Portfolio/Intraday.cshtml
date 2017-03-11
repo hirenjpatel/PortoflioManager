@@ -1,4 +1,4 @@
-﻿@model  DotNet.Highcharts.Highcharts
+﻿@model   PMWeb.Models.ValuationViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Valuation Intraday Chart";
@@ -11,6 +11,16 @@
 
 
 <body>
-    <p>Intraday Chart</p>
-    <div>@(Model)</div>
+    <p>@(Model.ValuationSummary.Portfolio.Name) - Intraday Chart</p>
+    <div>@(Model.Chart)</div>
+
+
+    <div>
+        Percentage Change: @(Model.PercentageChange) % <br />
+        Last Change: @(Model.IntradayChange) <br />
+        Intraday Low: $@(Model.IntradayLow) <br />
+        Intraday High: $@(Model.IntradayHigh) <br />
+        Portfolio Value: $@(Model.PortfolioValue)
+    </div>
 </body>
+

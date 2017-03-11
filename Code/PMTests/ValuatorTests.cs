@@ -10,7 +10,7 @@ namespace PMTests
         [TestMethod]
         public void RunValuationTest()
         {
-            Valuator valuator = new Valuator();
+            Valuator valuator = new Valuator(new GooglePriceEngine());
 
             valuator.RunValuation(1000);
 
