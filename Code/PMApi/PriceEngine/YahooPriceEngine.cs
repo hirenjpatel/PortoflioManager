@@ -1,4 +1,6 @@
-﻿using PMApi.Models;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PMApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,18 +11,21 @@ using System.Web;
 
 namespace PMApi.PriceEngine
 {
-    public class PriceEngine
+    public class YahooPriceEngine : IPriceEngine
     {
         const string base_url =
                "http://download.finance.yahoo.com/d/quotes.csv?s=@&f=sl1d1t1c1";
+
+
+        const string google_base_url = "http://finance.google.com/finance/info?client=ig&q=";
         //	s: Symbol 
         //  l1: Last Trade (Price Only)
         //  d1: Last Trade Date
         //  t1: Last Trade Time
         //  c1: Change
 
-        public static List<PriceValue> GetRealTimePrices(string[] symbols)
-         {
+        public List<PriceValue> GetPrices(string[] symbols)
+        {
 
             List<PriceValue> prices = new List<PriceValue>();
             string joinedSymbols = string.Join("+", symbols);
@@ -108,6 +113,43 @@ namespace PMApi.PriceEngine
                 // Return the result.
                 return result;
             }
+        }
+
+        public static List<PriceValue> GetRealTimePricesFromGoogle(string[] symbols)
+        {
+
+            List<PriceValue> prices = new List<PriceValue>();
+            string joinedSymbols = string.Join(",", symbols);
+            string url = "http://finance.google.com/finance/info?client=ig&q=" + joinedSymbols;
+
+            var wc = new WebClient { Proxy = null };
+
+          
+
+
+            string json = wc.DownloadString(url);
+            json.Replace("//", "");
+            json.Replace("\n", "");
+            var responseModel = JsonConvert.DeserializeObject(json);
+
+            return prices;
+
+        }
+
+        private static string GetJSONWebResponse(string url)
+        {
+            var request = WebRequest.Create(url);
+            request.ContentType = "application/json; charset=utf-8";
+
+  
+            string text;
+            var response = (HttpWebResponse)request.GetResponse();
+
+            using (var sr = new StreamReader(response.GetResponseStream()))
+            {
+                text = sr.ReadToEnd();
+            }
+            return text;
         }
     }
 }

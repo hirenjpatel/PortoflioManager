@@ -11,18 +11,26 @@ namespace PMTests
     public class PriceEngineTests
     {
         [TestMethod]
-        public void GetRealTimePricesTest()
+        public void YahooGetPrices()
         {
             PriceValueRepo _repo = new PriceValueRepo();
-            PriceEngine engine = new PriceEngine();
-            List<PriceValue> prices = PriceEngine.GetRealTimePrices(new string[] { "AXP", "MSFT" });
+            YahooPriceEngine engine = new YahooPriceEngine();
+            List<PriceValue> prices = engine.GetPrices(new string[] { "AXP", "MSFT" });
 
-            foreach (PriceValue pv in prices)
-            {
-               
-                _repo.Insert(pv);
-                _repo.SaveChanges();
-            }
+           Assert.AreEqual(2, prices.Count);
         }
+
+        [TestMethod]
+        public void GoogleGetPrices()
+        {
+            PriceValueRepo _repo = new PriceValueRepo();
+            GooglePriceEngine engine = new GooglePriceEngine();
+            List<PriceValue> prices = engine.GetPrices(new string[] { "AXP", "MSFT" });
+
+            Assert.AreEqual(2, prices.Count);
+        }
+
+
+
     }
 }

@@ -15,15 +15,19 @@ namespace PMApi.PriceEngine
         private ValuationRepo _valuationRepo;
         private ValuationDetailRepo _valuationDetailRepo;
 
+        private IPriceEngine _priceEngine;
+
         public DateTime ValuationTime { get; set; }
         public string ValuationStatus { get; set; }
 
-        public Valuator()
+        public Valuator(IPriceEngine priceEngine)
         {
             _portfolioRepo = new PortfolioRepo(_db);
             _priceValueRepo = new PriceValueRepo(_db);
             _valuationRepo = new ValuationRepo(_db);
             _valuationDetailRepo = new ValuationDetailRepo(_db);
+            _priceEngine = priceEngine;
+
 
     }
 
@@ -51,7 +55,10 @@ namespace PMApi.PriceEngine
             if (portfolios.Count == 0)
                 return;
             //get realtime prices
-            List<PriceValue> prices = PriceEngine.GetRealTimePrices(GetAllSymbolsFromPositions(portfolios));
+            List<PriceValue> prices = _priceEngine.GetPrices(GetAllSymbolsFromPositions(portfolios));
+
+            if (prices.Count <= 0)
+                return;
             //save prices
             SavePriceValues(prices);
             //valuation positions
