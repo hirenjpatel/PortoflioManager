@@ -6,7 +6,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <WebPublishMethod>MSDeploy</WebPublishMethod>
-    <ADUsesOwinOrOpenIdConnect>False</ADUsesOwinOrOpenIdConnect>
     <PublishProvider>AzureWebSite</PublishProvider>
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
@@ -25,21 +24,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <PublishDatabaseSettings>
       <Objects xmlns="">
         <ObjectGroup Name="PortfolioManagerContext" Order="1" Enabled="False">
-          <Destination Path="Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False" Name="Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False" />
-          <Object Type="DbDacFx">
-            <PreSource Path="Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False" includeData="False" />
-            <Source Path="$(IntermediateOutputPath)AutoScripts\PortfolioManagerContext_IncrementalSchemaOnly.dacpac" dacpacAction="Deploy" />
+          <Destination Path="Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False" Name="" />
+          <Object Type="DbCodeFirst">
+            <Source Path="DBContext" DbContext="PMApi.Models.PortfolioManagerContext, PMApi" Origin="Configuration" />
           </Object>
-          <UpdateFrom Type="Web.Config">
-            <Source MatchValue="Server=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" MatchAttributes="$(UpdateFromConnectionStringAttributes)" />
-          </UpdateFrom>
         </ObjectGroup>
       </Objects>
     </PublishDatabaseSettings>
+    <ADUsesOwinOrOpenIdConnect>False</ADUsesOwinOrOpenIdConnect>
   </PropertyGroup>
   <ItemGroup>
     <MSDeployParameterValue Include="PortfolioManagerContext-Web.config Connection String">
-      <ParameterValue>Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False</ParameterValue>
+      <ParameterValue>Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False</ParameterValue>
+    </MSDeployParameterValue>
+    <MSDeployParameterValue Include="PortfolioManagerContext-Web.config Connection String">
+      <ParameterValue>Data Source=tcp:pmservice.database.windows.net,1433;Initial Catalog=pmservice_db;Persist Security Info=False;User ID=pmservice_dbadmin;Password=Oklahoma#73096;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False</ParameterValue>
     </MSDeployParameterValue>
   </ItemGroup>
 </Project>
